@@ -2,9 +2,17 @@ import os
 from flask import Flask
 import psycopg2
 
-conn = psycopg2.connect(database="APP_DB",user="postgres",password=os.environ["POSTGRES_PW"], host = "localhost", port="5432")
+conn = psycopg2.connect(
+    database="APP_DB",
+    user="postgres",
+    password=os.environ["POSTGRES_PW"], 
+    host = "localhost", 
+    port="5432")
 
 cur = conn.cursor()
+
+#cur.execute("CREATE TABLE EVENTS ()")
+
 conn.commit()
 
 cur.close()
