@@ -1,4 +1,14 @@
+import os
 from flask import Flask
+import psycopg2
+
+conn = psycopg2.connect(database="APP_DB",user="postgres",password=os.environ["POSTGRES_PW"], host = "localhost", port="5432")
+
+cur = conn.cursor()
+conn.commit()
+
+cur.close()
+conn.close()
 
 server = Flask(__name__)
 
