@@ -1,29 +1,24 @@
+import datetime
 import os
 from flask import Flask
-from sqlalchemy import create_engine
 import psycopg2
 
-conn = psycopg2.connect(
-    database="APP_DB",
-    user="postgres",
-    password=os.environ["POSTGRES_PW"], 
-    host = "event-register-db-1", 
-    port="5432")
+from controlers.database import session
+from models.user import User
+from models.event import Event
 
-cur = conn.cursor()
+consulta =session.query(User).get(1)
 
-conn.commit()
+evento = Event(1,datetime.datetime.utcnow(),"Golf","Field","presencial")
 
-cur.close()
-conn.close()
-
-engine = create_engine("postgresql+psycopg2://postgres:databasePassword@event-register-db-1:5432/APP_DB")
+session.add(evento)
+session.commit()
 
 server = Flask(__name__)
 
 @server.route("/")
 def hello_world():
-    return "<p>Hello, beautiful world</p>"
+    return f"<p>Hello, beautiful {consulta.name},{consulta.id},{consulta.email}</p>"
 
 
 if __name__ == '__main__':
