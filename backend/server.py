@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from sqlalchemy import create_engine
 import psycopg2
 
 conn = psycopg2.connect(
@@ -11,19 +12,19 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-#cur.execute("CREATE TABLE EVENTS ()")
-
 conn.commit()
 
 cur.close()
 conn.close()
 
+engine = create_engine("postgresql+psycopg2://postgres:databasePassword@event-register-db-1:5432/APP_DB")
+
 server = Flask(__name__)
 
 @server.route("/")
 def hello_world():
-    return "<p>Hello, world</p>"
+    return "<p>Hello, beautiful world</p>"
 
 
 if __name__ == '__main__':
-    server.run()
+    server.run(debug=True,port=8000)

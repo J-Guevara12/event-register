@@ -5,28 +5,49 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PW}
       POSTGRES_DB: APP_DB
-
     ports:
       - "5432:5432"
-
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
-      - backnet
+      - backnet  
+
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d APP_DB'"]
+      interval: 3s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 
   backend:
     build:
       context: backend
       target: builder
     restart: always
-
     ports:
       - "8000:8000"
-
+    volumes:
+      - ./backend:/code
     networks:
       - backnet
-      - frontnet
-    
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    restart: always
+    networks:
+      - backnet
+
+volumes:
+  pgdata:
 
 networks:
   backnet:

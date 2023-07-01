@@ -2,12 +2,10 @@ FROM python AS builder
 
 WORKDIR /code
 
-COPY requirements.txt /code
+COPY . /code
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
-
-COPY . .
 
 ENV FLASK_APP server.py
 ENV FLASK_ENV development
@@ -17,4 +15,4 @@ ENV POSTGRES_PW databasePassword
 
 EXPOSE 8000
 
-CMD ["flask","run"]
+CMD ["flask","run","--debug"]
