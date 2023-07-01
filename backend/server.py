@@ -6,7 +6,7 @@ conn = psycopg2.connect(
     database="APP_DB",
     user="postgres",
     password=os.environ["POSTGRES_PW"], 
-    host = "localhost", 
+    host = "event-register-db-1", 
     port="5432")
 
 cur = conn.cursor()
