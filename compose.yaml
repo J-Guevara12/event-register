@@ -4,24 +4,29 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PW}
+      POSTGRES_DB: APP_DB
+
+    ports:
+      - "5432:5432"
+
+    networks:
+      - backnet
 
   backend:
     build:
       context: backend
       target: builder
-
     restart: always
 
     ports:
-      - 8000:8000
+      - "8000:8000"
 
     networks:
       - backnet
       - frontnet
     
     depends_on:
-      db:
-        condition: service_healthy
+      - db
 
 networks:
   backnet:
