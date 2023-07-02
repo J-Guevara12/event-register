@@ -1,7 +1,6 @@
 import datetime
 import os
 from flask import Flask
-import psycopg2
 
 from controlers.database import session
 from models.user import User
@@ -16,9 +15,9 @@ session.commit()
 
 server = Flask(__name__)
 
-@server.route("/")
+@server.route("/api")
 def hello_world():
-    return f"<p>Hello, beautiful {consulta.name},{consulta.id},{consulta.email}</p>"
+    return f"Hello, beautiful {consulta.name},{consulta.id},{consulta.email}"
 
 
 if __name__ == '__main__':
