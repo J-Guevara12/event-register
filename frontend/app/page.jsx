@@ -4,7 +4,6 @@ import theme from './theme'
 
 import * as React from 'react'
 
-import axios from "axios"
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -18,18 +17,18 @@ import Container from '@mui/material/Container';
 import { Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/material';
 
+import { useLogin } from "./hooks/useLogin.js"
+
 
 
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    axios.get("/api",{
-      email: data.get('email'),
-      password: data.get('password')
-    }).then((res) => {
-      console.log(res)
-    })
+    const data = new FormData(event.currentTarget)
+    const loginF = useLogin()
+    console.log(loginF.login(data.get('email'),data.get('password')))
+
+
   };
 
   return (
