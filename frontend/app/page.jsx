@@ -21,15 +21,16 @@ import { useLogin } from "./hooks/useLogin.js"
 
 
 
+
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     const loginF = useLogin()
-    console.log(loginF.login(data.get('email'),data.get('password')))
-
-
+    console.log(loginF(data.get('email'),data.get('password')))
   };
+
+  const [showPassword,setShowPassword] = React.useState(false);
 
   return (
     <ThemeProvider theme={theme}>
