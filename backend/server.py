@@ -35,5 +35,12 @@ def taskList():
     events = session.query(Event).all()
     return jsonify(events[0].name)
 
+@app.route("/api/signup",methods=["POST"])
+def signup():
+    name = request.json.get("name")
+    email = request.json.get("email")
+    password = request.json.get("password")
+    return userManager.createUser(name,email,password)
+
 if __name__ == '__main__':
     app.run(debug=True,port=8000)

@@ -23,4 +23,17 @@ class UserManager():
                 if(user.email==email):
                     access_token = create_access_token(identity=email)
                     return jsonify(access_token=access_token,username=user.name)
-        return jsonify({"msg": "Bad email or password"}), 401
+        return jsonify({"msg": "Wrong email or password"}), 401
+
+    def createUser(self,name,email,password):
+        query = session.query(User).filter(email==User.email).all()
+        if(query):
+            return jsonify({"msg": "Email already registered"}), 410
+
+        passwordHash = hashlib.sha256(password.encode()).hexdigest()
+
+        newUser = User(name,email,passwordHash)
+
+        session.add(newUser)
+        session.commit()
+        return jsonify({"msg": "created Successfully"}),201

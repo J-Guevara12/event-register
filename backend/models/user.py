@@ -10,3 +10,8 @@ class User(database.Base):
     name = Column("NAME",Text, nullable=False)
     email = Column("EMAIL",Text, nullable=False)
     hash = Column("HASH", nullable=False)
+
+    def __init__(self,name,email,hash):
+        self.name = name
+        self.email = email
+        self.hash = hash

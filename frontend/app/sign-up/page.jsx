@@ -1,6 +1,6 @@
 "use client"
-import './globals.css'
-import theme from './theme'
+import '../globals.css'
+import theme from '../theme'
 
 import * as React from 'react'
 
@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl'
@@ -26,17 +26,28 @@ import { ThemeProvider } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { useLogin } from "./hooks/useLogin.js"
+import axios from "axios"
 
+export default function SignUp() {
 
+  const ValidateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
-
-export default function SignIn() {
-  const loginFunction = useLogin()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    loginFunction(data.get('email'),data.get('password'))
+    if(!ValidateEmail(data.get('email'))){
+      console.log("Bad email")
+    }
+
+    return
+
+    axios.post("/api/signup",{
+      name: data.get('name'),
+      email: data.get('email'),
+      password: data.get('password'),
+    })
   };
 
   const [showPassword,setShowPassword] = React.useState(false);
@@ -62,10 +73,10 @@ export default function SignIn() {
             }}>
 
             <Avatar sx={{ p: 3.5, m: 1, bgcolor:  'primary.main' }}>
-            <LockOutlinedIcon />
+            <PersonAddOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-           Inicio de sesión 
+            Creación de cuenta
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -78,7 +89,16 @@ export default function SignIn() {
               autoComplete="email"
               autoFocus
             />
-            <FormControl sx={{width: '100%'}} variant='outlined'>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Nombre"
+              name="name"
+              autoFocus
+            />
+            <FormControl margin="normal" sx={{width: '100%'}} variant='outlined'>
               
               <InputLabel htmlFor="outlined-adornment-password">Contraseña*</InputLabel>
 
@@ -111,12 +131,12 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Iniciar sesión
+              Crea tu cuenta
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="sign-up" variant="body2">
-                  {"No tienes cuenta? Crea una"}
+                <Link href="/" variant="body2">
+                  {"Ya tienes cuenta? Inicia sesión"}
                 </Link>
               </Grid>
             </Grid>
