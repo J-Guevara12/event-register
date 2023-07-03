@@ -16,7 +16,7 @@ from models.event import Event
 evento = Event(1,datetime.datetime.utcnow(),"Golf","Field","presencial")
 
 #session.add(evento)
-session.commit()
+#session.commit()
 
 
 

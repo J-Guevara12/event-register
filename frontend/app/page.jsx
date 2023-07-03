@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl'
 import IconButton from '@mui/material/IconButton';
+import FormHelperText from '@mui/material/FormHelperText';
 import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputLabel from '@mui/material/InputLabel';
@@ -32,18 +33,43 @@ import { useLogin } from "./hooks/useLogin.js"
 
 
 export default function SignIn() {
-  const loginFunction = useLogin()
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget)
-    loginFunction(data.get('email'),data.get('password'))
-  };
 
   const [showPassword,setShowPassword] = React.useState(false);
-
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
   }
+
+  const [emailError,setEmailError] = React.useState({enabled: false, message: ""});
+  const [passwordError,setPasswordError] = React.useState({enabled: false, message: ""})
+
+  const loginFunction = useLogin()
+
+  const ValidateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget)
+    if(!ValidateEmail(data.get('email'))){
+      setEmailError(() => {return {
+        enabled: true, 
+        message: "Formato de Email no válido"}
+      })
+      return
+    }
+    if(!data.get('password')){
+      setPasswordError(() => {return {
+        enabled: true, 
+        message: "Campo obligatorio"}
+      })
+      return
+    }
+    loginFunction(data.get('email'),data.get('password'))
+  };
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,20 +98,34 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              error={emailError.enabled}
+              helperText={emailError.message}
+              onChange={() => {
+                setEmailError(()=>{return {enabled: false, message: ""}})}
+              }
               id="email"
               label="Email"
               name="email"
               autoComplete="email"
               autoFocus
             />
-            <FormControl sx={{width: '100%'}} variant='outlined'>
+            <FormControl 
+              margin="normal" 
+              sx={{width: '100%'}} 
+              variant='outlined'>
               
-              <InputLabel htmlFor="outlined-adornment-password">Contraseña*</InputLabel>
+              <InputLabel error={passwordError.enabled} htmlFor="outlined-adornment-password">
+                Contraseña*
+              </InputLabel>
 
               <OutlinedInput
                 type={showPassword? 'text' : 'password'}
                 required
                 fullWidth
+                error={passwordError.enabled}
+                onChange={() => {
+                  setPasswordError(()=>{return {enabled: false, message: ""}})}
+                }
                 name="password"
                 id="outlined-adornment-password"
                 autoComplete="current-password"
@@ -104,6 +144,12 @@ export default function SignIn() {
                 </InputAdornment>
                 }
               />
+              {passwordError? 
+              <FormHelperText 
+              error={passwordError.enabled}>{passwordError.message}
+              </FormHelperText>
+              :null}
+              
             </FormControl>
             <Button
               type="submit"

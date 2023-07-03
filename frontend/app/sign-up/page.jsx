@@ -42,6 +42,9 @@ export default function SignUp() {
   const ValidateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   }
+  const handleClickShowPassword = () => {
+    setShowPassword((show) => !show)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -75,7 +78,7 @@ export default function SignUp() {
     })
       .then((res) =>{
         if(res.status === 201){
-          router.replace("/")
+          router.push("/")
         }
       })
       .catch((err) => {
@@ -91,9 +94,6 @@ export default function SignUp() {
       })
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword((show) => !show)
-  }
 
   return (
     <ThemeProvider theme={theme}>
