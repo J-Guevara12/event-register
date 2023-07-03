@@ -23,6 +23,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 import { Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -30,7 +31,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from "axios"
 
 export default function SignUp() {
+  const router = useRouter();
+
   const [showPassword,setShowPassword] = React.useState(false);
+
   const [emailError,setEmailError] = React.useState({enabled: false, message: ""});
   const [nameError,setNameError] = React.useState({enabled: false, message: ""});
   const [passwordError,setPasswordError] = React.useState({enabled: false, message: ""})
@@ -43,7 +47,10 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     if(!ValidateEmail(data.get('email'))){
-      setEmailError(() => {return {enabled: true, message: "Formato de Email no válido"}})
+      setEmailError(() => {return {
+        enabled: true, 
+        message: "Formato de Email no válido"}
+      })
       return
     }
     if(!data.get('name')){
@@ -51,20 +58,37 @@ export default function SignUp() {
         enabled: true, 
         message: "Campo obligatorio"}
       })
+      return
     }
     if(!data.get('password')){
       setPasswordError(() => {return {
         enabled: true, 
         message: "Campo obligatorio"}
       })
+      return
     }
-    setEmailError(() => {return {enabled: false, message: ""}})
 
-    /*axios.post("/api/signup",{
+    axios.post("/api/signup",{
       name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
-    })*/
+    })
+      .then((res) =>{
+        if(res.status === 201){
+          router.replace("/")
+        }
+      })
+      .catch((err) => {
+        if(err.request.status===410){
+          setEmailError(() => {return {
+            enabled: true, 
+            message: "La dirección de correo ya se encuentra registrada"}
+          })
+        }
+        else{
+          throw(err)
+        }
+      })
   };
 
   const handleClickShowPassword = () => {
@@ -169,7 +193,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, color:'#e8ebfc' }}
             >
               Crea tu cuenta
             </Button>
