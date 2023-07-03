@@ -78,7 +78,7 @@ export default function SignIn() {
   };
 
   return (
-    <WindowContainer>
+    <WindowContainer size="sm">
             <Avatar sx={{ p: 3.5, m: 1, bgcolor:  'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

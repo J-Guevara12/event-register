@@ -1,28 +1,62 @@
-import { ThemeProvider, Stack, Paper, Box, Container} from "@mui/material"
-import TaskElement from "./TaskElement"
-import {useContext, useEffect} from "react"
+import {Box, Stack, Typography,IconButton} from "@mui/material"
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+
+import {useContext, useEffect,useState} from "react"
+import axios from "axios"
+
+import {AuthContext} from "../context/AuthContext"
+import Event from './Event'
 
 
 const EventContainer = () => {
-  const { data, loading, fetchData } = useContext(DataContext)
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const [user] = useContext(AuthContext)
+
+  const fetchData = () => {
+    const config = {
+      headers: {Authorization: `Bearer ${user.accessToken}`}
+    }
+
+    axios.get("/api/event",config).then(res=>{
+      setData(res.data.events);
+      setLoading(false);
+    })
+
+  }
+
   useEffect(() => {
+    //fetchData()
   },[])
 
   return (
-    <ThemeProvider>
-      <Container>
-      <Box mt={10} mx={10}>
-        <Paper elevation={1}>
-          <Stack spacing={4} p={5}>
-            {(!loading && data)?
-              (data.map(x => <TaskElement data={x} key={x.id} />))
-              : null
-            }
-          </Stack>
-        </Paper>
-      </Box>
-      </Container>
-    </ThemeProvider>
+    <Box 
+      sx={{
+        alignSelf:'start',
+        width: '100%',
+        marginRight: '120',
+      }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Typography component="h1" variant="h4">
+          Bienvenido {user.userName}
+        </Typography>
+        <IconButton size="large">
+          <AddRoundedIcon style={{fontSize: "50px"}}/>
+        </IconButton>
+      </Stack>
+      <Stack 
+        marginTop={5} 
+        direction="column" 
+        spacing ={2}
+        sx={{width: '100%'}}
+      >
+        {(!loading && data)? 
+          data.map( event => <Event data={event} key={event.id}/> )
+        : 
+        null}
+      </Stack>
+    </Box>
   )
 }
 

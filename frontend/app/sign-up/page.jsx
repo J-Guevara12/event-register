@@ -29,6 +29,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import axios from "axios"
+import WindowContainer from '../components/WindowContainer';
 
 export default function SignUp() {
   const router = useRouter();
@@ -96,118 +97,101 @@ export default function SignUp() {
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="sm">
-        <Box>
-          <Paper
-            elevation={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mt: 10,
-              pt:5,
-              px:10,
-              py: 5,
-            }}>
+    <WindowContainer size="sm">
+      <Avatar sx={{ p: 3.5, m: 1, bgcolor:  'primary.main' }}>
+          <PersonAddOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Creación de cuenta
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          error={emailError.enabled}
+          helperText={emailError.message}
+          onChange={() => {
+            setEmailError(()=>{return {enabled: false, message: ""}})}
+          }
+          id="email"
+          label="Email"
+          name="email"
+          autoComplete="email"
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="name"
+          label="Nombre"
+          name="name"
+          error={nameError.enabled}
+          helperText={nameError.message}
+          onChange={() => {
+            setNameError(()=>{return {enabled: false, message: ""}})}
+          }
+          autoFocus
+        />
+        <FormControl 
+          margin="normal" 
+          sx={{width: '100%'}} 
+          variant='outlined'>
+          
+          <InputLabel error={passwordError.enabled} htmlFor="outlined-adornment-password">
+            Contraseña*
+          </InputLabel>
 
-            <Avatar sx={{ p: 3.5, m: 1, bgcolor:  'primary.main' }}>
-            <PersonAddOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Creación de cuenta
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              error={emailError.enabled}
-              helperText={emailError.message}
-              onChange={() => {
-                setEmailError(()=>{return {enabled: false, message: ""}})}
-              }
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Nombre"
-              name="name"
-              error={nameError.enabled}
-              helperText={nameError.message}
-              onChange={() => {
-                setNameError(()=>{return {enabled: false, message: ""}})}
-              }
-              autoFocus
-            />
-            <FormControl 
-              margin="normal" 
-              sx={{width: '100%'}} 
-              variant='outlined'>
-              
-              <InputLabel error={passwordError.enabled} htmlFor="outlined-adornment-password">
-                Contraseña*
-              </InputLabel>
+          <OutlinedInput
+            type={showPassword? 'text' : 'password'}
+            required
+            fullWidth
+            error={passwordError.enabled}
+            onChange={() => {
+              setPasswordError(()=>{return {enabled: false, message: ""}})}
+            }
+            name="password"
+            id="outlined-adornment-password"
+            autoComplete="current-password"
+            label="Contraseña"
 
-              <OutlinedInput
-                type={showPassword? 'text' : 'password'}
-                required
-                fullWidth
-                error={passwordError.enabled}
-                onChange={() => {
-                  setPasswordError(()=>{return {enabled: false, message: ""}})}
-                }
-                name="password"
-                id="outlined-adornment-password"
-                autoComplete="current-password"
-                label="Contraseña"
+            endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                edge="end"
+              >
+                {showPassword? <VisibilityOff/> : <Visibility/> }
 
-                endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {showPassword? <VisibilityOff/> : <Visibility/> }
-
-                  </IconButton>
-                </InputAdornment>
-                }
-              />
-              {passwordError? 
-              <FormHelperText 
-              error={passwordError.enabled}>{passwordError.message}
-              </FormHelperText>
-              :null}
-              
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, color:'#e8ebfc' }}
-            >
-              Crea tu cuenta
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/" variant="body2">
-                  {"Ya tienes cuenta? Inicia sesión"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Paper>
-        </Box>
-      </Container>
-    </ThemeProvider>
+              </IconButton>
+            </InputAdornment>
+            }
+          />
+          {passwordError? 
+          <FormHelperText 
+          error={passwordError.enabled}>{passwordError.message}
+          </FormHelperText>
+          :null}
+          
+        </FormControl>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2, color:'#e8ebfc' }}
+        >
+          Crea tu cuenta
+        </Button>
+        <Grid container>
+          <Grid item>
+            <Link href="/" variant="body2">
+              {"Ya tienes cuenta? Inicia sesión"}
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </WindowContainer>
   );
 }

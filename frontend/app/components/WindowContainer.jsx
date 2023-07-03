@@ -6,10 +6,10 @@ import Box from '@mui/material/Box';
 import { Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/material';
 
-const WindowContainer = ({children}) => {
+const WindowContainer = ({size, children}) => {
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="sm">
+      <Container component="main" maxWidth={size}>
         <Box>
           <Paper
             elevation={4}

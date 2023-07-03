@@ -21,7 +21,7 @@ class UserManager():
         if(query):
             for user in query:
                 if(user.email==email):
-                    access_token = create_access_token(identity=email)
+                    access_token = create_access_token(identity=user.serialize())
                     return jsonify(access_token=access_token,username=user.name)
         return jsonify({"msg": "Wrong email or password"}), 401
 
