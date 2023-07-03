@@ -1,6 +1,5 @@
 "use client"
 import './globals.css'
-import theme from './theme'
 
 import * as React from 'react'
 
@@ -13,7 +12,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl'
 import IconButton from '@mui/material/IconButton';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -21,14 +19,13 @@ import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputLabel from '@mui/material/InputLabel';
 
-import { Paper } from '@mui/material';
-import { ThemeProvider } from '@mui/material';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useLogin } from "./hooks/useLogin.js"
 import {AuthContext} from './context/AuthContext';
+import WindowContainer from './components/WindowContainer';
 
 
 
@@ -81,21 +78,7 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="sm">
-        <Box>
-          <Paper
-            elevation={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mt: 10,
-              pt:5,
-              px:10,
-              py: 5,
-            }}>
-
+    <WindowContainer>
             <Avatar sx={{ p: 3.5, m: 1, bgcolor:  'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -176,9 +159,6 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </Box>
-        </Paper>
-        </Box>
-      </Container>
-    </ThemeProvider>
+    </WindowContainer>
   );
 }
