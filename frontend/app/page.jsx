@@ -28,6 +28,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useLogin } from "./hooks/useLogin.js"
+import {AuthContext} from './context/AuthContext';
 
 
 
@@ -42,12 +43,13 @@ export default function SignIn() {
   const [emailError,setEmailError] = React.useState({enabled: false, message: ""});
   const [passwordError,setPasswordError] = React.useState({enabled: false, message: ""})
 
-  const loginFunction = useLogin()
-
   const ValidateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   }
 
+  const [user, setUser] = React.useContext(AuthContext)
+
+  const loginFunction = useLogin(setUser)
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -69,7 +71,7 @@ export default function SignIn() {
     loginFunction(data.get('email'),data.get('password'))
   };
 
-
+  React.useEffect(()=>{console.log(user)},[user])
 
   return (
     <ThemeProvider theme={theme}>
@@ -155,7 +157,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, color:'#e8ebfc' }}
             >
               Iniciar sesión
             </Button>
