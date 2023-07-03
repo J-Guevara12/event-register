@@ -69,9 +69,16 @@ export default function SignIn() {
       return
     }
     loginFunction(data.get('email'),data.get('password'))
+      .catch((err) => {
+        if(err.response.status == 401){
+          setEmailError(() => {return {
+            enabled: true, 
+            message: "Email o contraseña incorrectos"}
+          })}
+        else{
+          throw(err)
+        }})
   };
-
-  React.useEffect(()=>{console.log(user)},[user])
 
   return (
     <ThemeProvider theme={theme}>
