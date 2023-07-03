@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl'
 import IconButton from '@mui/material/IconButton';
+import FormHelperText from '@mui/material/FormHelperText';
 import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputLabel from '@mui/material/InputLabel';
@@ -29,6 +30,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from "axios"
 
 export default function SignUp() {
+  const [showPassword,setShowPassword] = React.useState(false);
+  const [emailError,setEmailError] = React.useState({enabled: false, message: ""});
+  const [nameError,setNameError] = React.useState({enabled: false, message: ""});
+  const [passwordError,setPasswordError] = React.useState({enabled: false, message: ""})
 
   const ValidateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -38,19 +43,29 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     if(!ValidateEmail(data.get('email'))){
-      console.log("Bad email")
+      setEmailError(() => {return {enabled: true, message: "Formato de Email no válido"}})
+      return
     }
+    if(!data.get('name')){
+      setNameError(() => {return {
+        enabled: true, 
+        message: "Campo obligatorio"}
+      })
+    }
+    if(!data.get('password')){
+      setPasswordError(() => {return {
+        enabled: true, 
+        message: "Campo obligatorio"}
+      })
+    }
+    setEmailError(() => {return {enabled: false, message: ""}})
 
-    return
-
-    axios.post("/api/signup",{
+    /*axios.post("/api/signup",{
       name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
-    })
+    })*/
   };
-
-  const [showPassword,setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
@@ -83,6 +98,11 @@ export default function SignUp() {
               margin="normal"
               required
               fullWidth
+              error={emailError.enabled}
+              helperText={emailError.message}
+              onChange={() => {
+                setEmailError(()=>{return {enabled: false, message: ""}})}
+              }
               id="email"
               label="Email"
               name="email"
@@ -96,16 +116,30 @@ export default function SignUp() {
               id="name"
               label="Nombre"
               name="name"
+              error={nameError.enabled}
+              helperText={nameError.message}
+              onChange={() => {
+                setNameError(()=>{return {enabled: false, message: ""}})}
+              }
               autoFocus
             />
-            <FormControl margin="normal" sx={{width: '100%'}} variant='outlined'>
+            <FormControl 
+              margin="normal" 
+              sx={{width: '100%'}} 
+              variant='outlined'>
               
-              <InputLabel htmlFor="outlined-adornment-password">Contraseña*</InputLabel>
+              <InputLabel error={passwordError.enabled} htmlFor="outlined-adornment-password">
+                Contraseña*
+              </InputLabel>
 
               <OutlinedInput
                 type={showPassword? 'text' : 'password'}
                 required
                 fullWidth
+                error={passwordError.enabled}
+                onChange={() => {
+                  setPasswordError(()=>{return {enabled: false, message: ""}})}
+                }
                 name="password"
                 id="outlined-adornment-password"
                 autoComplete="current-password"
@@ -124,6 +158,12 @@ export default function SignUp() {
                 </InputAdornment>
                 }
               />
+              {passwordError? 
+              <FormHelperText 
+              error={passwordError.enabled}>{passwordError.message}
+              </FormHelperText>
+              :null}
+              
             </FormControl>
             <Button
               type="submit"
