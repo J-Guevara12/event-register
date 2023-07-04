@@ -5,11 +5,10 @@ import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const Event = ({data}) =>{
+const Event = ({handleEdit,data}) =>{
   const processDate = (date) => {
     let components = date.split(" ")
     let hour = components[4]
-    console.log(components)
     return `${components[1]} - ${components[2]} -
       ${components[3]} a las ${hour.slice(0,-3)}`
   }
@@ -53,7 +52,7 @@ const Event = ({data}) =>{
             direction="row" 
             alignItems='flex-start' 
             justifyContent="center">
-            <IconButton>
+            <IconButton onClick={()=>handleEdit(data)}>
               <EditRoundedIcon />
             </IconButton>
             <IconButton>

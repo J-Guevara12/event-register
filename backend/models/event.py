@@ -29,3 +29,15 @@ class Event(database.Base):
             "place": self.place,
             "modality": self.modality,
         }
+
+def eventFromSerial(serialData):
+    event = Event(
+        0,
+        serialData["date"],
+        serialData["name"],
+        serialData["place"],
+        serialData["modality"])
+
+    if(serialData["id"]):
+        event.id = serialData["id"]
+    return event

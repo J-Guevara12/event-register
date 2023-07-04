@@ -23,7 +23,6 @@ const EventInput = ({data, handleClose, event, setEvent}) => {
       return
     }
     if(!event.date){
-      console.log('hey')
       setErrors({...errors,date: {enabled: true, message: "Campo obligatorio"}})
       return
     }
@@ -31,12 +30,13 @@ const EventInput = ({data, handleClose, event, setEvent}) => {
       setErrors({...errors,modality: {enabled: true, message: "Campo obligatorio"}})
       return
     }
-    const config = {
-      headers: {Authorization: `Bearer ${user.accessToken}`}
-    }
+      
     data.create?
-      axios.post("/api/event",{event: event, ...config}):
-      axios.put("/api/event",{event: event, ...config})
+      axios.post("/api/event",{event: event},
+      {headers:{Authorization: `Bearer ${user.accessToken}`}}):
+      axios.put("/api/event",{event: event},
+      {headers:{Authorization: `Bearer ${user.accessToken}`}})
+    handleClose()
 
   }
 
@@ -86,6 +86,7 @@ const EventInput = ({data, handleClose, event, setEvent}) => {
           fullWidth
           id="place"
           label="Lugar"
+          value={event.place}
           error={errors.place.enabled}
           helperText={errors.place.message}
           onChange={e => {
@@ -106,7 +107,8 @@ const EventInput = ({data, handleClose, event, setEvent}) => {
           }}
         />
         <FormControl fullWidth margin='normal'>
-          <InputLabel error={errors.modality.enabled} id="modality-label">Modalidad</InputLabel>
+          <InputLabel 
+          error={errors.modality.enabled} id="modality-label">Modalidad</InputLabel>
           <Select
             labelId="modality-label"
             id="modality"

@@ -44,7 +44,7 @@ export default function SignIn() {
     return /\S+@\S+\.\S+/.test(email);
   }
 
-  const [ setUser] = React.useContext(AuthContext)
+  const [ user, setUser] = React.useContext(AuthContext)
 
   const loginFunction = useLogin(setUser)
 

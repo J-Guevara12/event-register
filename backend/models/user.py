@@ -33,6 +33,24 @@ class User(Base):
         query = session.query(Event).filter(Event.userID==self.id).all()
         return [event.serialize() for event in query]
 
+    def addEvent(self,event):
+        event.userID = self.id
+        session.add(event)
+        session.commit()
+        return "Event created",200
+
+    def editEvent(self,event):
+        event.userID = self.id
+        currentEvent = session.query(Event).filter(Event.id==event.id).one()
+
+        currentEvent.name = event.name
+        currentEvent.place = event.place
+        currentEvent.date = event.date
+        currentEvent.modality = event.modality
+
+        session.commit()
+        return "Event edited",200
+
 def userFromSerial(serialData):
     user = User(serialData["name"],serialData["email"],"")
     user.id = serialData["id"]

@@ -9,10 +9,9 @@ from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
-from controlers.database import session
 from controlers.userManager import UserManager
 from models.user import User, userFromSerial
-from models.event import Event
+from models.event import Event, eventFromSerial
 
 
 evento = Event(1,datetime.datetime.utcnow(),"Golf","Field","presencial")
@@ -31,14 +30,20 @@ def login():
     password = request.json.get("password")
     return userManager.login(email,password)
 
-@app.route("/api/event",methods=["GET"])
+@app.route("/api/event",methods=["GET","POST","PUT","DELETE"])
 @jwt_required()
 def taskList():
     user = userFromSerial(get_jwt_identity())
     if(user.verifyEmail()):
-        return jsonify(events=user.getEvents())
+        if request.method=="GET":
+            return jsonify(events=user.getEvents())
+        event = eventFromSerial(request.json.get('event'))
+        if request.method=="POST":
+            return user.addEvent(event)
+        if request.method=="PUT":
+            return user.editEvent(event)
     else:
-        return jsonify("nicen't")
+        return jsonify("User not found"),401
 
 @app.route("/api/signup",methods=["POST"])
 def signup():

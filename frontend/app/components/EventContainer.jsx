@@ -15,6 +15,7 @@ const EventContainer = () => {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentEvent, setCurrentEvent] = useState({
+    id: '',
     name: '',
     date: dayjs().$d,
     place: '',
@@ -37,17 +38,25 @@ const EventContainer = () => {
     })
   }
 
-  const HandleCreateTask = () => {
+  const handleCreateEvent = () => {
     setDialogData({
     open: true,
     create: true,
     })
     setCurrentEvent({
+      id: '',
       name: '',
       date: dayjs().$d,
       place: '',
       modality: '',
     })
+  }
+  const handleEditEvent = (event) => {
+    setDialogData({
+    open: true,
+    create: false,
+    })
+    setCurrentEvent(event)
   }
   const handleClose = () => {
     setDialogData({
@@ -57,8 +66,8 @@ const EventContainer = () => {
   }
 
   useEffect(() => {
-    //fetchData()
-  },[])
+    fetchData()
+  },[dialogData])
 
   return (
     <Box 
@@ -77,7 +86,7 @@ const EventContainer = () => {
         <Typography component="h1" variant="h4">
           Bienvenido {user.userName}
         </Typography>
-        <IconButton size="large" onClick={HandleCreateTask}>
+        <IconButton size="large" onClick={handleCreateEvent}>
           <AddRoundedIcon style={{fontSize: "50px"}}/>
         </IconButton>
       </Stack>
@@ -88,7 +97,11 @@ const EventContainer = () => {
         sx={{width: '100%'}}
       >
         {(!loading && data)? 
-          data.map( event => <Event data={event} key={event.id}/> )
+          data.map( event => <Event 
+            handleEdit={handleEditEvent} 
+            data={event} 
+            key={event.id}
+            /> )
         : 
         null}
       </Stack>
