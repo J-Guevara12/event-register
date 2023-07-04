@@ -44,7 +44,7 @@ export default function SignIn() {
     return /\S+@\S+\.\S+/.test(email);
   }
 
-  const [user, setUser] = React.useContext(AuthContext)
+  const [ setUser] = React.useContext(AuthContext)
 
   const loginFunction = useLogin(setUser)
 
@@ -106,7 +106,8 @@ export default function SignIn() {
               sx={{width: '100%'}} 
               variant='outlined'>
               
-              <InputLabel error={passwordError.enabled} htmlFor="outlined-adornment-password">
+              <InputLabel 
+                error={passwordError.enabled} htmlFor="outlined-adornment-password">
                 Contraseña*
               </InputLabel>
 
