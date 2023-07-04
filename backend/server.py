@@ -35,6 +35,9 @@ def login():
 def taskList():
     user = userFromSerial(get_jwt_identity())
     if(user.verifyEmail()):
+        if request.method=="DELETE":
+            eventId = request.json.get('id')
+            return user.deleteEvent(eventId)
         if request.method=="GET":
             return jsonify(events=user.getEvents())
         event = eventFromSerial(request.json.get('event'))

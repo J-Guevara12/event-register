@@ -65,6 +65,16 @@ const EventContainer = () => {
     })
   }
 
+  const handleDeleteEvent = (id) => {
+    const config = {
+      data: {id: id},
+      headers: {'Content-Type': 'application/json', 
+        Authorization: `Bearer ${user.accessToken}`}
+    }
+
+    axios.delete("/api/event",config).then(setTimeout(fetchData,100))
+  }
+
   useEffect(() => {
     fetchData()
   },[dialogData])
@@ -99,6 +109,7 @@ const EventContainer = () => {
         {(!loading && data)? 
           data.map( event => <Event 
             handleEdit={handleEditEvent} 
+            handleDelete={handleDeleteEvent}
             data={event} 
             key={event.id}
             /> )

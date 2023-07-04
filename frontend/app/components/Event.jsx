@@ -5,7 +5,7 @@ import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const Event = ({handleEdit,data}) =>{
+const Event = ({ handleDelete, handleEdit, data }) =>{
   const processDate = (date) => {
     let components = date.split(" ")
     let hour = components[4]
@@ -55,7 +55,7 @@ const Event = ({handleEdit,data}) =>{
             <IconButton onClick={()=>handleEdit(data)}>
               <EditRoundedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={()=>handleDelete(data.id)}>
               <DeleteRoundedIcon />
             </IconButton>
           </Stack>

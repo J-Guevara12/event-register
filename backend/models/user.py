@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Text, Integer
+from sqlalchemy import Column, Text, Integer, desc
 from flask import jsonify
 
-from controlers.database import session, Base
+from controlers.database import session, Base, engine
 from .event import Event
 
 class User(Base):
@@ -30,7 +30,7 @@ class User(Base):
         return queryID==self.id
 
     def getEvents(self):
-        query = session.query(Event).filter(Event.userID==self.id).all()
+        query = session.query(Event).filter(Event.userID==self.id).order_by(desc(Event.date)).all()
         return [event.serialize() for event in query]
 
     def addEvent(self,event):
@@ -50,6 +50,14 @@ class User(Base):
 
         session.commit()
         return "Event edited",200
+
+    def deleteEvent(self,eventId):
+        event = session.query(Event).filter(Event.id==eventId).one()
+        if(event.userID != self.id):
+            return "User not authorized to delete this event"
+        session.delete(event)
+        session.commit()
+        return f"Event {event.name} deleted", 200
 
 def userFromSerial(serialData):
     user = User(serialData["name"],serialData["email"],"")
