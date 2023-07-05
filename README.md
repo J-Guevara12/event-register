@@ -30,7 +30,7 @@ JWT_SECRET_KEY=/REPLACE/
 PGADMIN_EMAIL=/REPLACE/
 PGADMIN_PW=/REPLACE/
 ```
-Replace all `//` with the values you see adequate.
+Replace all `/REPLACE/` with the values you see adequate.
 
 
 Run:
@@ -42,6 +42,8 @@ inside the main folder execute:
 ```bash
 docker compose up
 ```
+Make sure your docker daemon is running.
+
 
 Wait until the images and containers install, then when you see the following in your terminal:
 ```bash
