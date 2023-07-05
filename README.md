@@ -58,6 +58,8 @@ Go to [localhost:80](http://localhost:80 "localhost:80") and you should see the 
 
 ## Usage
 As your database will be empty, you must create an account and log in, then you will be able to Create, Read, Edit and Delete your events that will be ordered in your form page from the most recent one to the oldest one.
+
+
 If you want to use PgAdmin, go to [localhost:5050](http://localhost:5050 "localhost:5050") and log in with the email and password specified in yout `.env` file, then add server and in connection configure it as:
 ```
 host: event-register-db-1
