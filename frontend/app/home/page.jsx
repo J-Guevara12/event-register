@@ -13,14 +13,14 @@ import PageRedirect from "../components/PageRedirect"
 export default function Home() {
   const [user] = useContext(AuthContext)
   return (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <WindowContainer size={"lg"}>
-      {
-      user.accessToken?
-          <EventContainer />:
-          <PageRedirect/>
-      }
-    </WindowContainer>
-          </LocalizationProvider>
-  )
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <WindowContainer size={"lg"}>
+        {
+        user.accessToken?
+            <EventContainer />:
+            <PageRedirect/>
+        }
+      </WindowContainer>
+    </LocalizationProvider>
+)
 }

@@ -72,11 +72,11 @@ const EventContainer = () => {
         Authorization: `Bearer ${user.accessToken}`}
     }
 
-    axios.delete("/api/event",config).then(setTimeout(fetchData,100))
+    axios.delete("/api/event",config).then(setTimeout(fetchData,50))
   }
 
   useEffect(() => {
-    fetchData()
+    setTimeout(fetchData,50) // Delay between the order and the API call to ensure the data returned is the updated one
   },[dialogData])
 
   return (

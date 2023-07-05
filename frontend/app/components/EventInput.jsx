@@ -12,6 +12,7 @@ import {AuthContext} from "../context/AuthContext"
 
 const EventInput = ({data, handleClose, event, setEvent}) => {
   const [user] = useContext(AuthContext)
+  dayjs().utcOffset(-300)
 
   const handleSubmit = ()=>{
     if(!event.name){
@@ -30,7 +31,10 @@ const EventInput = ({data, handleClose, event, setEvent}) => {
       setErrors({...errors,modality: {enabled: true, message: "Campo obligatorio"}})
       return
     }
-      
+
+    // Timezone correction
+    //setEvent({...event, date: dayjs(event.date).add(dayjs().utcOffset(),'minutes')})
+
     data.create?
       axios.post("/api/event",{event: event},
       {headers:{Authorization: `Bearer ${user.accessToken}`}}):

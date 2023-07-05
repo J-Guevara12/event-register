@@ -2,7 +2,7 @@ import './globals.css'
 import AuthProvider from './context/AuthProvider'
 
 export const metadata = {
-  title: 'Agenda - Iniciar sesión',
+  title: 'Agenda',
 }
 
 export default function RootLayout({ children }) {

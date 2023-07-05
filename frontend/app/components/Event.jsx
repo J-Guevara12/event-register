@@ -4,13 +4,12 @@ import LaptopTwoToneIcon from '@mui/icons-material/LaptopTwoTone';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import dayjs from "dayjs"
 
 const Event = ({ handleDelete, handleEdit, data }) =>{
+  dayjs().utcOffset(-300)
   const processDate = (date) => {
-    let components = date.split(" ")
-    let hour = components[4]
-    return `${components[1]} - ${components[2]} -
-      ${components[3]} a las ${hour.slice(0,-3)}`
+    return dayjs(date).format("LLLL")
   }
   return (
     <Box sx={{width:'100%'}}>
