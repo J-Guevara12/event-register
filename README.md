@@ -25,12 +25,16 @@ cd event-register
 Create a `.env` file with the following variables:
 
 ```
-POSTGRES_PW=//
-JWT_SECRET_KEY=//
-PGADMIN_EMAIL=//
-PGADMIN_PW= //
+POSTGRES_PW=/REPLACE/
+JWT_SECRET_KEY=/REPLACE/
+PGADMIN_EMAIL=/REPLACE/
+PGADMIN_PW=/REPLACE/
 ```
 Replace all `//` with the values you se adequate.
+Run:
+```bash
+source .env
+```
 ### Compose containers
 inside the main folder execute:
 ```bash
