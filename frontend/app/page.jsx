@@ -49,8 +49,13 @@ export default function SignIn() {
   const loginFunction = useLogin(setUser)
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
+
     const data = new FormData(event.currentTarget)
+
+    // Check all fields are completed
+
     if(!ValidateEmail(data.get('email'))){
       setEmailError(() => {return {
         enabled: true, 
@@ -65,6 +70,10 @@ export default function SignIn() {
       })
       return
     }
+
+    // Uses the function returned by the useLogin hook to perform a login
+
+
     loginFunction(data.get('email'),data.get('password'))
       .catch((err) => {
         if(err.response.status == 401){

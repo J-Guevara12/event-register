@@ -9,6 +9,8 @@ engine = create_engine(
 )
 
 Session = sessionmaker(bind=engine)
+
+# Session that handles the databse connection
 session = Session()
 
 Base = declarative_base()

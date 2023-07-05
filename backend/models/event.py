@@ -3,6 +3,9 @@ from sqlalchemy import Column, Text, Integer, TIMESTAMP
 from controlers import database
 
 class Event(database.Base):
+    """
+    Event Object mapped with the EVENTS table in the database
+    """
     __tablename__ = "EVENTS"
     __table_args__ = {'extend_existing': True}
 
@@ -21,6 +24,13 @@ class Event(database.Base):
         self.modality = modality
 
     def serialize(self):
+        """
+        Instance method:
+        Returns a serializable Event object that can be sent trough an API 
+
+        Output:
+            Dictionary containing all information contained by an Event Object
+        """
         return {
             "id": self.id,
             "userID": self.userID,
@@ -31,6 +41,16 @@ class Event(database.Base):
         }
 
 def eventFromSerial(serialData):
+    """
+    Function:
+    Converts an incoming JSON into a Event object
+
+    Input:
+        - serialData: Dictionary or JSON object with the atributtes of an Event
+
+    Output;
+        - Event object containing the information provided by serialData
+    """
     event = Event(
         0,
         serialData["date"],

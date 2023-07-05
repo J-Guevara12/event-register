@@ -1,5 +1,6 @@
 services:
   db:
+    #Database in postgresql
     image: postgres
     restart: always
     environment:
@@ -8,7 +9,10 @@ services:
     expose:
       - "5432:5432"
     volumes:
+      # Enables data persistency inside system
       - pgdata:/var/lib/postgresql/data
+      # Volume that stores the initialization code of the tables
+      - ./db/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
     networks:
       - backnet  
 
@@ -20,6 +24,7 @@ services:
       start_period: 10s
 
   backend:
+    # Backend in Flask-Python with Gunicorn as its HTTP server
     build:
       context: backend
       target: builder
@@ -31,36 +36,38 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/code
-    networks:
-      - backnet
-      - frontnet
-      
+
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - backnet
+      
 
   frontend:
+    # Frontend in NextJS
     build:
       context: frontend
       target: runner
-
+    restart: always
     volumes:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
-
     command: npm run start
     expose:
       - "3000:3000"
     environment:
       NODE_ENV: production
 
+    depends_on:
+      - backend
     networks:
       - frontnet
-    restart: always
 
 
   pgadmin:
+    # PG Admin to easily manage the database
     container_name: pgadmin
     image: dpage/pgadmin4:latest
     environment:
@@ -73,6 +80,7 @@ services:
       - backnet
 
   proxy:
+    # Proxy in nginx, acts also as a reverse proxy
     build: proxy
     restart: always
     ports:
@@ -82,6 +90,7 @@ services:
       - backend
     networks:
       - frontnet
+      - backnet
 
 
 volumes:

@@ -1,34 +1,18 @@
 "use client"
 import '../globals.css'
-import theme from '../theme'
 
 import * as React from 'react'
-
-
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import FormControl from '@mui/material/FormControl'
-import IconButton from '@mui/material/IconButton';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputAdornment from '@mui/material/InputAdornment'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputLabel from '@mui/material/InputLabel';
-
-import { Paper } from '@mui/material';
-import { ThemeProvider } from '@mui/material';
+import axios from "axios"
 import { useRouter } from 'next/navigation';
 
+import { Avatar, Button, TextField, Link, Grid, Box, Typography } from '@mui/material'
+import { FormControl, IconButton, FormHelperText, InputAdornment } from '@mui/material'
+import { OutlinedInput, InputLabel } from '@mui/material'
+
+import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import axios from "axios"
 import WindowContainer from '../components/WindowContainer';
 
 export default function SignUp() {
@@ -49,7 +33,10 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget)
+    
+    // Checks if all fields have value
     if(!ValidateEmail(data.get('email'))){
       setEmailError(() => {return {
         enabled: true, 

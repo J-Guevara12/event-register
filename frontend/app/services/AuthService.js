@@ -1,6 +1,9 @@
 import axios from "axios"
 
 export function Login (email, password) {
+  /*
+  function that performs the login and returns the user info
+  */
   return axios.post("/api/login",{
     email: email,
     password: password 
