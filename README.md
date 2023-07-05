@@ -30,7 +30,9 @@ JWT_SECRET_KEY=/REPLACE/
 PGADMIN_EMAIL=/REPLACE/
 PGADMIN_PW=/REPLACE/
 ```
-Replace all `//` with the values you se adequate.
+Replace all `//` with the values you see adequate.
+
+
 Run:
 ```bash
 source .env
