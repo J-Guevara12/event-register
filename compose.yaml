@@ -49,11 +49,11 @@ services:
       - /app/node_modules
       - /app/.next
 
-    command: npm run dev
+    command: npm run start
     expose:
       - "3000:3000"
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
 
     networks:
       - frontnet
