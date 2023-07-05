@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PW}
       POSTGRES_DB: APP_DB
-    ports:
+    expose:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -23,16 +23,18 @@ services:
     build:
       context: backend
       target: builder
+      args:
+        POSTGRES_PASSWORD_ARG: ${POSTGRES_PW}
+        JWT_SECRET_KEY_ARG: ${JWT_SECRET_KEY}
     restart: always
-    ports:
+    expose:
       - "8000:8000"
     volumes:
       - ./backend:/code
     networks:
       - backnet
       - frontnet
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PW}
+      
     depends_on:
       db:
         condition: service_healthy
@@ -48,7 +50,7 @@ services:
       - /app/.next
 
     command: npm run dev
-    ports:
+    expose:
       - "3000:3000"
     environment:
       NODE_ENV: development
@@ -76,8 +78,8 @@ services:
     ports:
       - 80:80
     depends_on:
-      - backend
       - frontend
+      - backend
     networks:
       - frontnet
 

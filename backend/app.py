@@ -1,6 +1,4 @@
 import datetime
-import sys
-
 
 from flask import Flask
 from flask import request
@@ -13,15 +11,13 @@ from controlers.userManager import UserManager
 from models.user import User, userFromSerial
 from models.event import Event, eventFromSerial
 
-
-evento = Event(1,datetime.datetime.utcnow(),"Golf","Field","presencial")
-
-#session.add(evento)
-#session.commit()
-
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 app = Flask(__name__)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
 userManager = UserManager(app)
 
 @app.route("/api/login", methods=["POST"])

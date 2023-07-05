@@ -1,4 +1,5 @@
 import hashlib
+import os
 
 from flask import jsonify
 
@@ -12,7 +13,7 @@ from models.event import Event
 
 class UserManager():
     def __init__(self, app):
-        app.config["JWT_SECRET_KEY"] = "random-secret"
+        app.config["JWT_SECRET_KEY"] = os.environ["JWT_SECRET_KEY"]
         jwt = JWTManager(app)
 
     def login(self,email,password):
