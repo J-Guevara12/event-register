@@ -15,6 +15,7 @@ class User(Base):
     name = Column("NAME",Text, nullable=False)
     email = Column("EMAIL",Text, nullable=False)
     hash = Column("HASH", nullable=False)
+    salt = Column("SALT", nullable=False)
 
     def __init__(self,name,email,hash):
         self.name = name

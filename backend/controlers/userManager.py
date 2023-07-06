@@ -1,4 +1,5 @@
 import hashlib
+import secrets
 import os
 
 from flask import jsonify
@@ -37,11 +38,12 @@ class UserManager():
         Output:
             - HTTP response with the product of the operation and the JWT Token in case of success
         """
-        passwordHash = hashlib.sha256(password.encode()).hexdigest()
-        query =session.query(User).filter(User.hash == passwordHash).all()
+        query =session.query(User).filter(User.email == email).all()
+
         if(query):
             for user in query:
-                if(user.email==email):
+                passwordHash = hashlib.sha256(password.encode()+user.salt.encode()).hexdigest()
+                if(user.hash==passwordHash):
                     access_token = create_access_token(identity=user.serialize())
                     return jsonify(access_token=access_token,username=user.name)
         return jsonify({"msg": "Wrong email or password"}), 401
@@ -64,9 +66,11 @@ class UserManager():
             # Checks if the email is already registered
             return jsonify({"msg": "Email already registered"}), 410
 
-        passwordHash = hashlib.sha256(password.encode()).hexdigest()
+        salt = secrets.token_urlsafe(32)
+        passwordHash = hashlib.sha256(password.encode()+salt.encode()).hexdigest()
 
         newUser = User(name,email,passwordHash)
+        newUser.salt = salt
 
         session.add(newUser)
         session.commit()
