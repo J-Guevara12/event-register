@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public."USERS"
     "EMAIL" text COLLATE pg_catalog."default" NOT NULL,
     "NAME" text COLLATE pg_catalog."default" NOT NULL,
     "HASH" text COLLATE pg_catalog."default" NOT NULL,
+    "SALT" text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "USERS_pkey" PRIMARY KEY ("ID")
 )
 

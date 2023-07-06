@@ -31,6 +31,7 @@ services:
       args:
         POSTGRES_PASSWORD_ARG: ${POSTGRES_PW}
         JWT_SECRET_KEY_ARG: ${JWT_SECRET_KEY}
+        PEPPER: ${PEPPER}
     restart: always
     expose:
       - "8000:8000"

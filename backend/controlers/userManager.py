@@ -12,6 +12,8 @@ from controlers.database import session
 from models.user import User
 from models.event import Event
 
+pepper = os.environ["PEPPER"]
+
 class UserManager():
     """
     Class that handles all the user related operation such as sign-up and log-in
@@ -42,7 +44,7 @@ class UserManager():
 
         if(query):
             for user in query:
-                passwordHash = hashlib.sha256(password.encode()+user.salt.encode()).hexdigest()
+                passwordHash = hashlib.sha256(password.encode()+user.salt.encode()+pepper.encode()).hexdigest()
                 if(user.hash==passwordHash):
                     access_token = create_access_token(identity=user.serialize())
                     return jsonify(access_token=access_token,username=user.name)
@@ -67,7 +69,7 @@ class UserManager():
             return jsonify({"msg": "Email already registered"}), 410
 
         salt = secrets.token_urlsafe(32)
-        passwordHash = hashlib.sha256(password.encode()+salt.encode()).hexdigest()
+        passwordHash = hashlib.sha256(password.encode()+salt.encode()+pepper.encode()).hexdigest()
 
         newUser = User(name,email,passwordHash)
         newUser.salt = salt
