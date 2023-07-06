@@ -29,6 +29,7 @@ POSTGRES_PW=/REPLACE/
 JWT_SECRET_KEY=/REPLACE/
 PGADMIN_EMAIL=/REPLACE/
 PGADMIN_PW=/REPLACE/
+PEPPER=/REPLACE/
 ```
 Replace all `/REPLACE/` with the values you see adequate.
 
